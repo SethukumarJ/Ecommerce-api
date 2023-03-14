@@ -1,0 +1,112 @@
+definitions:
+  domain.Users:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      data: {}
+      errors: {}
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /api/users:
+    get:
+      description: Get all users
+      operationId: FindAll
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all users
+      tags:
+      - users
+    post:
+      description: Save user
+      operationId: Save
+      parameters:
+      - description: admin signup with username, phonenumber email ,password
+        in: body
+        name: RegisterAdmin
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Users'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all users
+      tags:
+      - users
+  /users:
+    delete:
+      description: Delete one users
+      operationId: DeleteOne
+      parameters:
+      - description: 'User Id : '
+        in: query
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete one users
+      tags:
+      - users
+    get:
+      description: Get one users
+      operationId: FindOne
+      parameters:
+      - description: 'User Id : '
+        in: query
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get one users
+      tags:
+      - users
+swagger: "2.0"
