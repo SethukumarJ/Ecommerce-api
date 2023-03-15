@@ -12,5 +12,5 @@ type UserRepository interface {
 	CreateUser(ctx context.Context, user domain.Users) (domain.UserResponse, error)
 	Delete(ctx context.Context, userid string) error
 	VerifyAccount(ct context.Context,email string, code string) error
-	
+	StoreVerificationDetails(email string, code string) error
 }

@@ -16,8 +16,12 @@
 	func InitializeAPI(cfg config.Config) (*http.ServerHTTP, error) {
 		wire.Build(
 			db.ConnectDatabase,
-		    repository.NewUserMongoRepository, // added provider function
+			config.NewMailConfig,
+		    repository.NewUserMongoRepository,
+			respository.NewAdminMongoRepository // added provider function
 			usecase.NewUserUseCase,
+			usecase.NewAdminUseCase.
+			handler.NewAdminHandler,
 			handler.NewUserHandler,
 			http.NewServerHTTP,
 		)
