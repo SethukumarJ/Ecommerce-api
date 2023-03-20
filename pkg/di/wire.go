@@ -20,9 +20,11 @@
 		    repository.NewUserMongoRepository,
 			respository.NewAdminMongoRepository // added provider function
 			usecase.NewUserUseCase,
-			usecase.NewAdminUseCase.
+			usecase.NewAdminUseCase,
+			usecase.NewAuthUsecase,
 			handler.NewAdminHandler,
 			handler.NewUserHandler,
+			handler.NewAuthHandler,
 			http.NewServerHTTP,
 		)
 		

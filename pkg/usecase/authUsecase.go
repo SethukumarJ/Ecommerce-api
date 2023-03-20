@@ -41,7 +41,7 @@ func (c *authUsecase) VerifyAccount(ctx context.Context, email string, code stri
 // VerifyUser verifies the user credentials
 func (c *authUsecase) VerifyUser(ctx context.Context,email string, password string) error {
 
-	user, err := c.userRepo.FindUser(ctx, email)
+	user, err := c.userRepo.FindUserByName(ctx, email)
 
 	if err != nil {
 		return errors.New("failed to login. check your email")

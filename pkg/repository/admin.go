@@ -15,6 +15,11 @@ type adminDatabaseMongo struct {
 	DB *mongo.Client
 }
 
+// DeleteAdmin implements interfaces.AdminRepository
+func (*adminDatabaseMongo) DeleteAdmin(ctx context.Context, userId string) error {
+	panic("unimplemented")
+}
+
 // CreateAdmin implements interfaces.AdminRepository
 func (db *adminDatabaseMongo) CreateAdmin(ctx context.Context, user domain.Admins) (domain.AdminResponse, error) {
 	// Get the "users" collection.
@@ -54,8 +59,6 @@ func (db *adminDatabaseMongo) FindAdmin(ctx context.Context, id string) (domain.
 	}
 	return user, nil
 }
-
-
 
 func NewAdminMongoRepository(DB *mongo.Client) interfaces.AdminRepository {
 

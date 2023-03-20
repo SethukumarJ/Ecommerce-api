@@ -24,6 +24,28 @@ type userUseCase struct {
 	config     config.Config
 }
 
+// FindUserByID implements interfaces.UserUseCase
+func (c *userUseCase) FindUserByID(ctx context.Context, id string) (domain.UserResponse, error) {
+	userres, err := c.userRepo.FindUserByID(ctx, id)
+
+	if err != nil {
+		return domain.UserResponse{}, err
+	}
+
+	return userres, nil
+}
+
+// FindUserByName implements interfaces.UserUseCase
+func (c *userUseCase) FindUserByName(ctx context.Context, name string) (domain.UserResponse, error) {
+	userres, err := c.userRepo.FindUserByName(ctx, name)
+
+	if err != nil {
+		return domain.UserResponse{}, err
+	}
+
+	return userres, nil
+}
+
 // AllUsers implements interfaces.UserUseCase
 func (c *userUseCase) AllUsers(ctx context.Context) ([]domain.UserResponse, error) {
 	users, err := c.userRepo.AllUsers(ctx)
@@ -31,14 +53,14 @@ func (c *userUseCase) AllUsers(ctx context.Context) ([]domain.UserResponse, erro
 }
 
 // Delete implements interfaces.UserUseCase
-func (c *userUseCase) Delete(ctx context.Context, userId string) error {
-	return c.userRepo.Delete(ctx, userId)
+func (c *userUseCase) DeleteUser(ctx context.Context, userId string) error {
+	return c.userRepo.DeleteUser(ctx, userId)
 }
 
 // CreateUser implements interfaces.UserUseCase
 func (c *userUseCase) CreateUser(ctx context.Context, user domain.Users) (domain.UserResponse, error) {
 	fmt.Println("create user from service")
-	userres, err := c.userRepo.FindUser(ctx, user.Email)
+	userres, err := c.userRepo.FindUserByName(ctx, user.Email)
 	fmt.Println("found user", err)
 
 	if err == nil {
@@ -59,16 +81,6 @@ func (c *userUseCase) CreateUser(ctx context.Context, user domain.Users) (domain
 	return userres, nil
 }
 
-// FindUser implements interfaces.UserUseCase
-func (c *userUseCase) FindUser(ctx context.Context, id string) (domain.UserResponse, error) {
-	userres, err := c.userRepo.FindUser(ctx, id)
-
-	if err != nil {
-		return domain.UserResponse{}, err
-	}
-
-	return userres, nil
-}
 
 func (c *userUseCase) SendVerificationEmail(email string) error {
 
@@ -83,7 +95,7 @@ func (c *userUseCase) SendVerificationEmail(email string) error {
 
 	subject := "Account Verification"
 	msg := []byte(
-		"From: Events Radar <eventsRadarversion1@gmail.com>\r\n" +
+		"From: Events Radar <kiduShopeeversion1@gmail.com>\r\n" +
 			"To: " + email + "\r\n" +
 			"Subject: " + subject + "\r\n" +
 			"MIME-Version: 1.0\r\n" +
@@ -103,7 +115,7 @@ func (c *userUseCase) SendVerificationEmail(email string) error {
 			"  </head>" +
 			"  <body>" +
 			"    <p>Click the button on verify your accout:</p>" +
-			"    <a class=\"blue-button\" href=\"https://eventsradar.online/user/verify-account?token=" + tokenString + "\" target=\"_blank\">Access Credentials</a>" +
+			"    <a class=\"blue-button\" href=\"http://localhost:3000/user/verify-account?token=" + tokenString + "\" target=\"_blank\">Access Credentials</a>" +
 			"  </body>" +
 			"</html>")
 

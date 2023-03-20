@@ -29,9 +29,9 @@ func NewServerHTTP(userHandler *handler.UserHandler) *ServerHTTP {
 	// Auth middleware
 	// api := engine.Group("/api", middleware.AuthorizationMiddleware)
 
-	engine.GET("/users", userHandler.FindByID)
-	engine.POST("/api/users", userHandler.Save)
-	engine.DELETE("users", userHandler.Delete)
+	// engine.GET("/users", userHandler.FindByID)
+	// engine.POST("/api/users", userHandler.Save)
+	// engine.DELETE("users", userHandler.Delete)
 
 	return &ServerHTTP{engine: engine}
 }

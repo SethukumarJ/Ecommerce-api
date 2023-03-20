@@ -28,20 +28,20 @@ func NewAdminHandler(
 }
 
 // FindOne godoc
-// @summary Get one users
+// @summary Get admin
 // @description Get one users
-// @tags users
-// @id FindOne
+// @tags admins
+// @id FindAdminyId
 // @produce json
-// @Param        userId   query      string  true  "User Id : "
-// @Router /users [get]
+// @Param    adminId   query      string  true  "admin Id : "
+// @Router /admin/id [get]
 // @Success 200 {object} response.Response{}
 // @Failure 422 {object} response.Response{}
-func (cr *AdminHandler) FindAdmin(c *gin.Context) {
-	userId := c.Query("userId")
-	fmt.Println(userId)
+func (cr *AdminHandler) FindAdminyId(c *gin.Context) {
+	adminId := c.Query("adminId")
+	fmt.Println(adminId)
 
-	user, err := cr.adminUsecase.FindAdmin(c,userId)
+	user, err := cr.adminUsecase.FindAdminById(c,adminId)
 	fmt.Printf("\n\nuser  : %v\n\nerr  %v\n\n", user, err)
 
 	if err != nil {
@@ -58,10 +58,10 @@ func (cr *AdminHandler) FindAdmin(c *gin.Context) {
 // @summary Get all users
 // @description Save user
 // @tags users
-// @id Save
-// @param RegisterAdmin body domain.Users{} true "admin signup with username, phonenumber email ,password"
+// @id CeateAdmin
+// @param RegisterAdmin body domain.Admins{} true "admin signup with username, phonenumber, email ,password"
 // @produce json
-// @Router /api/users [Post]
+// @Router /admin [Post]
 // @Success 200 {object} response.Response{}
 // @Failure 422 {object} response.Response{}
 func (cr *AdminHandler) CreateAdmin(c *gin.Context) {
@@ -72,7 +72,7 @@ func (cr *AdminHandler) CreateAdmin(c *gin.Context) {
 		return
 	}
 
-	_,err := cr.adminUsecase.CreateAdmin(c,newUser)
+	admin,err := cr.adminUsecase.CreateAdmin(c,newUser)
 
 	if err != nil {
 		response := response.ErrorResponse("Failed to create user", err.Error(), nil)
@@ -83,7 +83,7 @@ func (cr *AdminHandler) CreateAdmin(c *gin.Context) {
 	}
 
 	newUser.Password = ""
-	response := response.SuccessResponse(true, "SUCCESS", newUser)
+	response := response.SuccessResponse(true, "SUCCESS", admin)
 	c.Writer.Header().Add("Content-Type", "application/json")
 	c.Writer.WriteHeader(http.StatusOK)
 	utils.ResponseJSON(*c, response)
@@ -94,8 +94,6 @@ func (cr *AdminHandler) CreateAdmin(c *gin.Context) {
 // @Tags Admin-User Profile
 // @Produce json
 // @Security BearerAuth
-// @Param  page   query  string  true  "Page number: "
-// @Param  pagesize   query  string  true  "Page capacity : "
 // @Success 200 {object} response.Response{}
 // @Failure 422 {object} response.Response{}
 // @Router /admin/list-users [get]
@@ -112,6 +110,8 @@ func (cr *UserHandler) ViewAllUsers(c *gin.Context) {
 	}
 
 	response := response.SuccessResponse(true, "Listed All Users", users)
+	c.Writer.Header().Add("Content-Type", "application/json")
+	c.Writer.WriteHeader(http.StatusOK)
 	utils.ResponseJSON(*c, response)
 
 }

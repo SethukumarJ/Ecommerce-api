@@ -111,7 +111,7 @@ func (cr *AuthHandler) UserSignup(c *gin.Context) {
 		return
 	}
 
-	user, _ := cr.userUsecase.FindUser(c, newUser.Email)
+	user, _ := cr.userUsecase.FindUserByName(c, newUser.Email)
 	user.Password = ""
 	response := response.SuccessResponse(true, "SUCCESS", user)
 	c.Writer.Header().Add("Content-Type", "application/json")
@@ -124,7 +124,7 @@ var (
 	oauthConfGl = &oauth2.Config{
 		ClientID:     "",
 		ClientSecret: "",
-		RedirectURL:  "https://eventsradar.online/user/callback-gl",
+		RedirectURL:  "https://localhost:3000/user/callback-gl",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 		Endpoint:     google.Endpoint,
 	}
@@ -228,7 +228,7 @@ func (cr *AuthHandler) CallBackFromGoogle(c *gin.Context) {
 		newUser := domain.Users{}
 		newUser.UserName, newUser.Email = any.Email, any.Email
 
-		user, err := cr.userUsecase.FindUser(c,any.Email)
+		user, err := cr.userUsecase.FindUserByName(c,any.Email)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -243,7 +243,7 @@ func (cr *AuthHandler) CallBackFromGoogle(c *gin.Context) {
 				utils.ResponseJSON(*c, response)
 				return
 			}
-			newUser, err := cr.userUsecase.FindUser(c, any.Email)
+			newUser, err := cr.userUsecase.FindUserByName(c, any.Email)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -334,7 +334,7 @@ func (cr *AuthHandler) UserLogin(c *gin.Context) {
 	}
 
 	//fetching user details
-	user, _ := cr.userUsecase.FindUser(c, userLogin.Email)
+	user, _ := cr.userUsecase.FindUserByName(c, userLogin.Email)
 	accesstoken, err := cr.jwtUsecase.GenerateAccessToken(*user.ID, user.UserName, "user")
 	if err != nil {
 		response := response.ErrorResponse("Failed to generate access token", err.Error(), nil)
@@ -437,7 +437,7 @@ func (cr *AuthHandler) AdminSignup(c *gin.Context) {
 		return
 	}
 
-	admin, _ := cr.adminUsecase.FindAdmin(c,newAdmin.Email)
+	admin, _ := cr.adminUsecase.FindAdminByName(c,newAdmin.Email)
 	admin.Password = ""
 	response := response.SuccessResponse(true, "SUCCESS", admin)
 	c.Writer.Header().Add("Content-Type", "application/json")
@@ -475,7 +475,7 @@ func (cr *AuthHandler) AdminLogin(c *gin.Context) {
 	}
 
 	//fetching user details
-	admin, _ := cr.adminUsecase.FindAdmin(c, adminLogin.Email)
+	admin, _ := cr.adminUsecase.FindAdminByName(c, adminLogin.Email)
 	accesstoken, err := cr.jwtUsecase.GenerateAccessToken(*admin.ID, admin.UserName, "admin")
 	if err != nil {
 		response := response.ErrorResponse("Failed to generate access token", err.Error(), nil)

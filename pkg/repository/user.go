@@ -15,6 +15,26 @@ type userDatabaseMongo struct {
 	DB *mongo.Client
 }
 
+// DeleteUser implements interfaces.UserRepository
+func (*userDatabaseMongo) DeleteUser(ctx context.Context, userid string) error {
+	panic("unimplemented")
+}
+
+// FindUserByID implements interfaces.UserRepository
+func (*userDatabaseMongo) FindUserByID(ctx context.Context, id string) (domain.UserResponse, error) {
+	panic("unimplemented")
+}
+
+// FindUserByName implements interfaces.UserRepository
+func (*userDatabaseMongo) FindUserByName(ctx context.Context, id string) (domain.UserResponse, error) {
+	panic("unimplemented")
+}
+
+// StoreVerificationDetails implements interfaces.UserRepository
+func (*userDatabaseMongo) StoreVerificationDetails(email string, code string) error {
+	panic("unimplemented")
+}
+
 // VerifyAccount implements interfaces.UserRepository
 func (*userDatabaseMongo) VerifyAccount(ct context.Context, email string, code string) error {
 	panic("unimplemented")
