@@ -11,6 +11,7 @@
 		db "ecommerce/pkg/db"
 		repository "ecommerce/pkg/repository"
 		usecase "ecommerce/pkg/usecase"
+		middleware "ecommerce/pkg/api/middleware"
 	)
 
 	func InitializeAPI(cfg config.Config) (*http.ServerHTTP, error) {
@@ -18,13 +19,15 @@
 			db.ConnectDatabase,
 			config.NewMailConfig,
 		    repository.NewUserMongoRepository,
-			respository.NewAdminMongoRepository // added provider function
-			usecase.NewUserUseCase,
-			usecase.NewAdminUseCase,
-			usecase.NewAuthUsecase,
+			repository.NewAdminMongoRepository, 
 			handler.NewAdminHandler,
 			handler.NewUserHandler,
 			handler.NewAuthHandler,
+			usecase.NewJWTUsecase,
+			usecase.NewUserUseCase,
+			usecase.NewAdminUseCase,
+			usecase.NewAuthUsecase,
+			middleware.NewMiddlewareUser,
 			http.NewServerHTTP,
 		)
 		
